@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}All Posts{% endblock %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static "posts/index.css" %}">
+{% endblock %}
+
+{% block content %}
+    <section id="all-posts">
+
+    <h1>Find Restaurants</h1>
+    <form method="GET" action="{% url 'post-main-page' %}" id="filter-form">
+        <div class="filter-container">
+            {% render_field filter.form.restaurant_name placeholder="Restaurant Name" class+="filter-name" %}
+            {% render_field filter.form.address placeholder="Address" class+="filter-address" %}
+            {% render_field filter.form.tips_situation class+="filter-tips" %}
+            {% render_field filter.form.job_type class+="filter-job" %}
+            {% render_field filter.form.food_type class+="filter-food" %}
+        </div>
+
+        <div class="filter-btn-group">
+            <input type="submit" value="Search" class="search-btn"/>
+            <input type="button" value="Reset Filter" class="reset-btn"/>
+        </div>
+    </form>
+
+    <ul class="post-list">
+        {% for post in no_repeated_posts %}
+            {% include "posts/includes/post.html" %}
+        {% endfor %}
+    </ul>
+
+    <div class="main-page-pages">
+        {% if no_repeated_posts.has_previous %}
+            <a href="?page=1"><i class="fa-solid fa-angles-right fa-flip-horizontal"></i></a>
+            <a href="?page={{ no_repeated_posts.previous_page_number }}"><i class="fa-solid fa-angle-right fa-flip-horizontal"></i></a>
+        {% else %}
+            <span class="hidden-pages"><i class="fa-solid fa-angles-right fa-flip-horizontal"></i></span>
+            <span class="hidden-pages"><i class="fa-solid fa-angle-right fa-flip-horizontal"></i></span>
+        {% endif %}
+
+        <form method="get" class="page-navigation-form">
+            <input class="no-spinner" type="number" id="page-number" name="page" min="1" max="{{ no_repeated_posts.paginator.num_pages }}" value="{{ no_repeated_posts.number }}" required>
+                {% for key, value in request.GET.items %}
+                    {% if key != "page" %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}">
+                    {% endif %}
+                {% endfor %}
+            / {{ no_repeated_posts.paginator.num_pages }}
+        </form>
+
+        {% if no_repeated_posts.has_next %}
+            <a href="?page={{ no_repeated_posts.next_page_number }}"><i class="fa-solid fa-angle-right"></i></a>
+            <a href="?page={{ no_repeated_posts.paginator.num_pages }}"><i class="fa-solid fa-angles-right"></i></a>
+        {% else %}
+            <span class="hidden-pages"><i class="fa-solid fa-angle-right"></i></span>
+            <span class="hidden-pages"><i class="fa-solid fa-angles-right"></i></span>
+        {% endif %}
+    </div>
+    </section>
+{% endblock %}
+
+{% block extend_footer %}
+    <script src="{% static 'posts/index.js' %}"></script>
+{% endblock %}

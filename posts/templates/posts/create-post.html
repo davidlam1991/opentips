@@ -1,0 +1,60 @@
+{% extends "posts/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Create Post{% endblock %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static "posts/create-post.css" %}">
+{% endblock %}
+
+{% block content %}
+  <section id="create-post">
+    <div>
+        <a href="{% url 'post-main-page' %}">
+            <button type="button" class="back-button"><i class="fa-solid fa-arrow-left"></i> Back</button>
+        </a>
+    </div>
+
+    <div class="create-post-content">
+        <h2>{% if view == "create" %}Submit a Tip{% else %}Editing{% endif %}</h2>
+
+        <form action="{% if view == 'create' %}{% url 'post-create-post' %}{% else %}{% url 'edit-post' slug=object.slug %}{% endif %}" method="POST">
+          {% csrf_token %}
+            <div class="form-group">
+                <h3>Restaurant Information</h3>
+                <div class="info-group">
+                    {% render_field form.restaurant_name class+="restaurant-name" placeholder="Enter Restaurant Name" %}
+                    {% render_field form.food_type class+="food-type" %}
+                    {% render_field form.address class+="address" placeholder="Restaurant Address" %}
+                </div>
+
+                <h3>About Tipping & Employment</h3>
+                <div class="tip-em-group">
+                    {% render_field form.tips_situation class+="tips-situation" %}
+                    {% render_field form.job_type class+="job-type" %}
+                    {% render_field form.date class+="employ-date" placeholder="Employ Date (MM/YYYY)" %}
+                    {% render_field form.tips_sit_detail class+="tips-detail hidden" id="tips_sit_detail_container" placeholder="Tell me more" %}
+                </div>
+
+                <h3>Additional Notes</h3>
+                {% render_field form.content class+="content-detail" placeholder='Optional: Add any relevant details (e.g., “Only cash tips are given to servers.”, “Tips are shared with kitchen staff.”, “Servers can keep their tips, but bartenders and hosts do not.”)' %}
+
+            </div>
+            <div class="save-btn-group">
+              <button type="submit" class="save-btn"><i class="fa-solid fa-pen fa-flip-horizontal"></i> Submit</button>
+              {% if view == 'edit' %}
+                  <a href="{% url 'post-detail' slug=object.slug %}" class="cancel-btn">Cancel</a>
+              {% endif %}
+            </div>
+        </form>
+    </div>
+  </section>
+{% endblock %}
+
+{% block extend_footer %}
+<script type="text/javascript">
+    var google_api_key = "{{ google_api_key|safe }}";
+</script>
+<script src="{% static 'posts/create-post.js' %}"></script>
+{% endblock %}

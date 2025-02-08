@@ -1,0 +1,94 @@
+{% extends "posts/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+    {{ post.restaurant_name }}
+{% endblock %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static "posts/post-detail.css" %}">
+{% endblock %}
+
+{% block content %}
+    <section class="page-container">
+        <div class="sidebar">
+            <div>
+                <a href="{% url 'post-main-page' %}">
+                    <button type="button" class="back-button"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                </a>
+            </div>
+            <div class="restaurant-details">
+                <h1><strong>{{ initial_post.restaurant_name }}</strong></h1>
+
+                    {% if initial_post.tips_situation == 'TG' %}
+                        <div class="tips-situation tips-given">
+                            <span class="material-icons tips-icon">check_circle</span>
+                            {{ initial_post.get_tips_situation_display }}
+                        </div>
+                    {% elif initial_post.tips_situation == 'TNG' %}
+                        <div class="tips-situation tips-not-given">
+                            <span class="material-icons tips-icon">cancel</span>
+                            {{ initial_post.get_tips_situation_display }}
+                        </div>
+                    {% elif initial_post.tips_situation == 'C' %}
+                        <div class="tips-situation tips-conditional">
+                            <span class="material-icons tips-icon">do_disturb_on</span>
+                            {{ initial_post.get_tips_situation_display }}
+                        </div>
+                    {% endif %}
+                <p><b>Address</b><br>{{ initial_post.address }}</p>
+                <p><b>Food Type</b><br>{{ initial_post.get_food_type_display }}</p>
+            </div>
+        </div>
+        <div class="content">
+            <section id="reviews-section">
+                {% include "posts/includes/reviews.html" with initial_post=initial_post user=user post=post %}
+            </section>
+
+            <section id="comments-section">
+                {% include "posts/includes/replies.html" with comments=comments user=user comment_form=comment_form %}
+            </section>
+        </div>
+    </section>
+
+    <!-- report comment -->
+    <div id="report-modal" class="modal">
+        <div class="modal-content">
+            <span id="closeReportModal" class="close-button"><i class="fa-solid fa-x"></i></span>
+            <h1><b>Submit a Report</b></h1>
+            <form action="{% url 'report' %}" method="POST" id="report-form">
+                {% csrf_token %}
+                <input type="hidden" name="slug" value="{{ post.slug }}" />
+                <input type="hidden" id="reported-link" name="reported_link" value="" />
+                <input type="hidden" id="reported-comment" name="reported_comment" value="" />
+
+                {{ report_form.reason }}
+                {{ report_form.detail }}
+                <div >
+                    <button type="submit" class="submit-report-btn">
+                    <i class="fa-solid fa-pen fa-flip-horizontal submit-report-icon"></i>
+                    Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- delete comment -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-delete-btn" class="close-button"><i class="fa-solid fa-x"></i></span>
+            <h1><b>Are you sure?</b></h1>
+            <form id="deleteForm" method="POST" action="">
+                {% csrf_token %}
+                <input type="submit" value="Confirm" class="confirm-delete-btn"/>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extend_footer %}
+<script src="{% static 'posts/post-detail.js' %}"></script>
+{% endblock %}

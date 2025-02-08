@@ -1,0 +1,24 @@
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block title %}Resend Token{% endblock %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'users/form-styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section>
+        <h2>Resend Code</h2>
+        <form action="" method='POST'>
+            {% csrf_token %}
+            <div>
+                <input type="email" name="otp_email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-btn">
+                <button type="submit">Send</button>
+            </div>
+        </form>
+    </section>
+{% endblock %}

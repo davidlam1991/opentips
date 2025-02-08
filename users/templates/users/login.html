@@ -1,0 +1,36 @@
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'users/form-styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section>
+    <h2>Log In</h2>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div>
+            <input name="email" placeholder="Enter email">
+        </div>
+
+        <div>
+            <input type="password" name="password" placeholder="Enter password">
+        </div>
+
+        <div class="form-btn">
+            <button type="submit">Log in</button>
+        </div>
+
+        <div>
+            <p><a href="{% url 'password-reset' %}">forget password?</a></p>
+        </div>
+        <div>
+            <p>New to Here? <a href="{% url 'users-signup' %}">Sign Up</a></p>
+            <p class="text-center mt-3">Didn't verify email? <a href="{% url 'resend-otp' %}">Resend</a></p>
+        </div>
+    </form>
+    </section>
+{% endblock %}

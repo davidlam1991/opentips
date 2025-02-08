@@ -1,0 +1,199 @@
+#create-post {
+  width: 1043px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.create-post-content {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 35px;
+  margin: 30px 0 30px 0;
+  padding: 30px 0;
+}
+
+h2 {
+  text-align: center;
+  color: #000000;
+  font-size: 35px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+h3 {
+  color: #000000;
+  font-size: 23px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: initial;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 700px;
+}
+
+form input,
+form select,
+form textarea {
+  padding: 10px 20px;
+  border: 1px solid #ced4da;
+  border-radius: 35px;
+  background-color: white;
+  font-size: 15px;
+}
+
+.info-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-gap: 1rem;
+  margin: 0 0 35px 0;
+}
+
+.restaurant-name {
+  grid-column: 1 / 3;
+  grid-row: 1;
+}
+
+.food-type {
+  grid-column: 3 / 4;
+  grid-row: 1;
+}
+
+.address {
+  grid-column: 1 / 4;
+  grid-row: 2;
+}
+
+.tip-em-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-row: auto;
+  grid-gap: 1rem;
+  margin: 0 0 15px 0;
+}
+
+.tips-situation {
+  grid-column: 1 / 2;
+  grid-row: 1;
+}
+
+.job-type {
+  grid-column: 2 / 3;
+  grid-row: 1;
+}
+
+.employ-date {
+  grid-column: 3 / 4;
+  grid-row: 1;
+}
+
+.tips-detail {
+  grid-column: 1 / 4;
+  grid-row: 2;
+}
+
+.content-detail {
+  resize: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.restaurant-name,
+.food-type,
+.address,
+.tips-situation,
+.job-type,
+.employ-date,
+.tips-detail,
+.content-detail {
+    border-radius: 30px;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    color: #000000;
+    z-index: 1;
+    background-color: #ffffff;
+}
+
+.restaurant-name:hover,
+.food-type:hover,
+.address:hover,
+.tips-situation:hover,
+.job-type:hover,
+.employ-date:hover,
+.tips-detail:hover,
+.content-detail:hover {
+  border-color: #999;
+  background-color: #ffffff;
+}
+
+.restaurant-name:focus,
+.food-type:focus,
+.address:focus,
+.tips-situation:focus,
+.job-type:focus,
+.employ-date:focus,
+.tips-detail:focus,
+.content-detail:focus {
+  outline: 3px solid #007bff;
+}
+
+/* Button */
+.back-button {
+  background-color: transparent;
+  color: #000000;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.back-button:hover,
+.back-button:focus{
+  color: #7a7a7a;
+}
+
+.save-btn-group {
+  display: block;
+  text-align: center;
+  margin: 10px 0 0 0;
+}
+
+.save-btn,
+.cancel-btn {
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  border-radius: 90px;
+  padding: 10px 20px;
+}
+
+.save-btn {
+  background-color: #000000;
+  color: #fefefe;
+}
+
+.save-btn:hover,
+.save-btn:focus {
+  background-color: #757575;
+  color: #fefefe;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-btn {
+  background-color: #757575;
+  color: #fefefe;
+  margin: 0 0 0 10px;
+}
+
+.cancel-btn:hover,
+.cancel-btn:focus {
+  background-color: #000000;
+  color: #fefefe;
+  transition: background-color 0.3s ease;
+}

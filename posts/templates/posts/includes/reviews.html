@@ -1,0 +1,84 @@
+
+<div class="restaurant-reviews">
+    <h1><strong>Reviews</strong></h1>
+    {% for post in all_posts %}
+        <div class="restaurant-review">
+        <table>
+            <tr>
+                <th>Tips Situation</th>
+                <td>{{ post.get_tips_situation_display }}</td>
+                <td></td>
+            </tr>
+            {% if post.tips_sit_detail != None %}
+            <tr>
+                <th>Description</th>
+                <td>{{ post.get_tips_situation_display }}></td>
+                <td></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>Job Type</th>
+                <td>{{ post.get_job_type_display }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ post.date|date:"m/Y" }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ post.content }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><p><i class="fa-solid fa-user user-icon"></i> {{ post.creator }}</p></td>
+                <td></td>
+                <td class="button-td">
+                    <button class="dot-icon"><i class="fa-solid fa-ellipsis"></i></button>
+                    <!-- Hidden section with action buttons -->
+                    <div class="post-actions-modal hidden" id="post-actions-{{ post.id }}">
+                        {% if user == post.creator %}
+                            <a href="{% url 'edit-post' slug=post.slug %}" class="btn btn-light edit-btn"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                        {% else %}
+                            <a class="btn btn-light report-button" data-slug="{{ post.slug }}" data-author="{{ post.creator }}"><i class="fa-solid fa-flag"></i> Report</a>
+                        {% endif %}
+
+                        {% if user.is_staff %}
+                            <a class="btn btn-light delete-btn" data-post-slug="{{ post.slug }}" data-post-id="{{ post.id }}"><i class="fa-solid fa-trash"></i> Delete</a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        </table>
+        </div>
+    {% endfor %}
+
+    <div class="single-post-pages">
+        {% if all_posts.has_previous %}
+            <a href="?page-reviews=1"><i class="fa-solid fa-angles-right fa-flip-horizontal"></i></a>
+            <a href="?page-reviews={{ all_posts.previous_page_number }}"><i class="fa-solid fa-angle-right fa-flip-horizontal"></i></a>
+        {% else %}
+            <span class="hidden-pages"><i class="fa-solid fa-angles-right fa-flip-horizontal"></i></span>
+            <span class="hidden-pages"><i class="fa-solid fa-angle-right fa-flip-horizontal"></i></span>
+        {% endif %}
+
+        <form method="get" class="page-navigation-form">
+            <input class="no-spinner" type="number" id="page-number" name="page" min="1" max="{{ all_posts.paginator.num_pages }}" value="{{ all_posts.number }}" required>
+                {% for key, value in request.GET.items %}
+                    {% if key != "page" %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}">
+                    {% endif %}
+                {% endfor %}
+            / {{ all_posts.paginator.num_pages }}
+        </form>
+
+        {% if all_posts.has_next %}
+            <a href="?page-reviews={{ all_posts.next_page_number }}"><i class="fa-solid fa-angle-right"></i></a>
+            <a href="?page-reviews={{ all_posts.paginator.num_pages }}"><i class="fa-solid fa-angles-right"></i></a>
+        {% else %}
+            <span class="hidden-pages"><i class="fa-solid fa-angle-right"></i></span>
+            <span class="hidden-pages"><i class="fa-solid fa-angles-right"></i></span>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,382 @@
+.hidden {
+  visibility: hidden;
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+section {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.back-button {
+  background-color: transparent;
+  color: #000000;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.back-button:hover,
+.back-button:focus{
+  color: #7a7a7a;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  position: relative;
+  margin: 10% auto;
+  padding: 30px;
+  border: 1px solid #888;
+  border-radius: 35px;
+  width: 40%;
+  text-align: center;
+}
+
+.report-selection {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 35px;
+  margin: 1px 0 0 0;
+  padding: 15px;
+  width: 80%;
+}
+
+.report-content {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 35px;
+  margin: 15px 0 0 0;
+  padding: 15px;
+  width: 80%;
+  resize: none;
+  overflow: hidden;
+}
+
+.close-button {
+  position: absolute;
+  top: 30px;
+  right: 25px;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #7a7a7a;
+}
+
+.confirm-delete-btn,
+.submit-btn,
+.save-btn {
+  background-color: #000000;
+  color: #fefefe;
+  border: none;
+  border-radius: 90px;
+  padding: 10px 20px;
+}
+
+.confirm-delete-btn:hover,
+.confirm-delete-btn:focus,
+.submit-btn:hover,
+.submit-btn:focus,
+.save-btn:hover,
+.save-btn:focus {
+  background-color: #7a7a7a;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-btn {
+  background-color: transparent;
+  border: none;
+  color: #757575;
+  padding: 10px 20px;
+}
+
+.cancel-btn:hover,
+.cancel-btn:focus {
+  color: #a4a4a4;
+}
+
+.comment-btn-group,
+.edit-comment-btn-group {
+  text-align: end;
+  margin: 15px 0 0 0;
+  display: block;
+}
+
+.submit-report-btn {
+  background-color: #000000;
+  color: #fefefe;
+  margin: 15px 0 0 0;
+  border: none;
+  border-radius: 90px;
+  padding: 5px 20px;
+}
+
+.submit-report-btn:hover,
+.submit-report-btn:focus {
+  background-color: #7a7a7a;
+}
+
+.submit-report-icon {
+  color: #fefefe;
+  font-size: 18px;
+  margin: 0 5px 0 0;
+}
+
+.modal-content h1 {
+  margin-top: 40px;
+}
+
+/* Post Details */
+.page-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  margin: 20px 100px;
+}
+
+.restaurant-details {
+  background-color: #ffffff;
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  height: fit-content;
+}
+
+.restaurant-reviews {
+  background-color: #fff;
+  padding: 20px;
+}
+
+.single-post-pages,
+.loop-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0 0 0;
+  gap: 20px;
+}
+
+.single-post-pages a,
+.loop-icon a{
+  color: #000000;
+  transition: color 0.3s ease;
+}
+
+.single-post-pages a:hover,
+.single-post-pages a:focus {
+  color: #7a7a7a;
+}
+
+.no-spinner {
+    -moz-appearance: textfield;
+    text-align: center;
+}
+
+.hidden-pages {
+  visibility: hidden;
+}
+
+.restaurant-review {
+  background-color: rgba(115, 115, 115, 0.07);
+  border-radius: 35px;
+  padding: 50px;
+  margin: 35px 0 0 0;
+}
+
+.tips-situation {
+  border-radius: 30px;
+  font-weight: bold;
+  padding: 2px 15px 5px 15px;
+  margin: 25px 0 25px 0;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  vertical-align: center;
+  width: auto;
+}
+
+.tips-given {
+  background-color: #99e6a7;
+}
+
+.tips-not-given {
+  background-color: #e03d3d;
+}
+
+.tips-conditional {
+  background-color: #e8ba33;
+}
+
+.tips-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  padding: 2px;
+  margin: 0 5px 0 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+/*Reviews Section*/
+.user-icon {
+  padding: 0 5px 0 0;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+table tr {
+  display: flex;
+}
+
+table tr td:first-child,
+table tr th:first-child,
+table tr td:nth-child(2),
+table tr th:nth-child(2){
+  width: 30%;
+}
+
+table tr td:nth-child(3),
+table tr th:nth-child(3) {
+  width: 40%;
+}
+
+table tr:last-child {
+  margin: 30px 0 0 0;
+}
+
+td, th {
+  text-align: left;
+  padding: 8px;
+}
+
+.button-td {
+  position: relative;
+  text-align: right;
+}
+
+.dot-icon,
+.reply-button {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.dot-icon:hover,
+.dot-icon:focus,
+.reply-button:hover,
+.reply-button:focus {
+  color: #9d9ea0;
+}
+
+/* Comment Section */
+.comment-section {
+  padding: 20px;
+}
+
+.comment-input,
+.editable-textarea {
+  background-color: transparent;
+  width: 100%;
+  border-radius: 35px;
+  border: 1px solid #ccc;
+  padding: 10px 30px;
+  margin: 15px 0 0 0;
+  overflow: hidden;
+  resize: none;
+}
+
+.comment-btn-container {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+}
+
+.comment-btn-container.edit-mode {
+  grid-template-columns: 1fr;
+}
+
+.nested-comment-btn-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-column: 1 / span 2;
+  margin: 10px 0 0 20px;
+}
+
+.edit-comment-btn-group {
+  text-align: end;
+  margin-top: 15px;
+}
+
+.comment-select-group {
+  position: relative;
+  text-align: end;
+}
+
+.reply-comment-area {
+  grid-column: 1 / span 2;
+}
+
+.author-name {
+  margin: 0 30px 0 0;
+}
+
+.date-posted {
+  font-size: 12px;
+}
+
+/* Initially hide the post-actions container */
+.post-actions-modal {
+  position: absolute;
+  right: 20px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.post-actions-modal a,
+.post-actions-modal input {
+  display: flex;
+  align-items: center;
+}
+
+.edit-btn i,
+.delete-btn i,
+.delete-comment-button i,
+.report-button i {
+  margin-right: 8px;
+}
+
+.edit-btn:hover,
+.delete-btn:hover,
+.delete-comment-button:hover,
+.report-button:hover {
+  background-color: #9d9ea0;
+}

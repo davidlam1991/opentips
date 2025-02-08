@@ -1,0 +1,34 @@
+{% load humanize %}
+{% load widget_tweaks %}
+
+<li class="post">
+  <article>
+    <a href="{% url 'post-detail' post.slug %}">
+      <div class="post__content">
+          <div class="post-food">{{ post.get_food_type_display }}</div>
+          <div class="post-restaurant">{{ post.restaurant_name }}</div>
+          <div class="post-address">{{ post.address }}</div>
+
+          <div class="post-bottom">
+              {% if post.tips_situation == 'TG' %}
+                  <div class="post-tips tips-given">
+                      <span class="material-icons tips-icon">check_circle</span>
+                      {{ post.get_tips_situation_display }}
+                  </div>
+              {% elif post.tips_situation == 'TNG' %}
+                  <div class="post-tips tips-not-given">
+                      <span class="material-icons tips-icon">cancel</span>
+                      {{ post.get_tips_situation_display }}
+                  </div>
+              {% elif post.tips_situation == 'C' %}
+                  <div class="post-tips tips-conditional">
+                      <span class="material-icons tips-icon">do_disturb_on</span>
+                      {{ post.get_tips_situation_display }}
+                  </div>
+              {% endif %}
+              <div class="post-date">{{ post.shortened_release_date }}</div>
+          </div>
+      </div>
+    </a>
+  </article>
+</li>

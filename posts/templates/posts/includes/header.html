@@ -1,0 +1,23 @@
+{% load static %}
+<div class="header-container">
+    <div class="logo">
+        <a class="logo" href="{% url 'post-main-page' %}">
+            <img src="{% static 'posts/img/logo.png' %}" alt='forum logo'>
+        </a>
+    </div>
+    
+    {% if user.is_authenticated %}
+        <div class="user-login-group">
+            <a class="create-post-btn" href="{% url "post-create-post" %}">
+                <i class="fa-solid fa-pen fa-flip-horizontal"></i> Submit a Tip
+            </a>
+            <a class="logout-btn"  href="{% url "users-logout" %}">Log Out</a>
+            <a class="profile-btn" href="{% url "profile" %}"><i class="fa-solid fa-user user-icon"></i></a>
+        </div>
+    {% else %}
+        <div class="user-login-group">
+            <a class="login-btn" href="{% url "users-login" %}">Log In</a>
+            <i class="fa-solid fa-user user-icon"></i>
+        </div>
+    {% endif %}
+</div>

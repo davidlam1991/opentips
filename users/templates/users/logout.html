@@ -1,0 +1,13 @@
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+<section>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+</section>
+{% endblock %}

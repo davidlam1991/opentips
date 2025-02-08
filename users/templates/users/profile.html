@@ -1,0 +1,135 @@
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static "users/profile.css" %}">
+{% endblock %}
+
+{% block content %}
+    <section id="account-page">
+        <div class="account-content">
+            <h2>My Account</h2>
+            <div class="account-group">
+                <table>
+                    <tr>
+                        <th><h3>Profile</h3></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Username</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ user.email }} <button type="button" id="edit-email-btn">Edit</button></td>
+                    </tr>
+                    <tr class="spacer-row">
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th><h3>Security</h3></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Password</th>
+                        <td>*** <button type="button" id="edit-password-btn">Edit</button></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Pop up window for changing email -->
+            <div id="email-modal" class="modal">
+                <div class="modal-content">
+                    <span id="close-email-modal" class="close-button"><i class="fa-solid fa-x"></i></span>
+                    <h3>Change Email Address</h3>
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <input type="password" id="current_password" name="current_password" placeholder="Current password" required>
+                        <input type="email" id="id_email" name="email" placeholder="New Email" value="" required>
+
+                        <button class="submit-btn" type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Pop up window for changing password -->
+            <div id="password-modal" class="modal">
+                <div class="modal-content">
+                <span id="close-password-modal" class="close-button"><i class="fa-solid fa-x"></i></span>
+                <h3>Change Password</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="password" id="id_old_password" name="old_password" placeholder="Current password" required>
+                    <input type="password" id="id_new_password1" name="new_password1" placeholder="New password" required>
+                    <input type="password" id="id_new_password2" name="new_password2" placeholder="Confirm new password" required>
+
+                    <button type="submit" class="submit-btn">Save</button>
+                </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-reviews">
+            <div class="review-group">
+                <h2>My Reviews</h2>
+                {% if user_reviews %}
+                    {% for post in user_reviews %}
+                        <a href="{% url 'post-detail' post.slug %}">
+                            <div class="review-detail review_page">
+                                <div>{{ post.restaurant_name }} on {{ post.release_date|date:"d/m/Y" }}</div>
+                                {% if post.tips_situation == 'TG' %}
+                                    <div class="post-tips tips-given">
+                                        <span class="material-icons tips-icon">check_circle</span>
+                                        {{ post.get_tips_situation_display }}
+                                    </div>
+                                {% elif post.tips_situation == 'TNG' %}
+                                    <div class="post-tips tips-not-given">
+                                        <span class="material-icons tips-icon">cancel</span>
+                                        {{ post.get_tips_situation_display }}
+                                    </div>
+                                {% elif post.tips_situation == 'C' %}
+                                    <div class="post-tips tips-conditional">
+                                        <span class="material-icons tips-icon">do_disturb_on</span>
+                                        {{ post.get_tips_situation_display }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div> You don't have any reviews</div>
+                {% endif %}
+
+            {% if user_reviews.has_next %}
+                <button id="load-more" data-next-page="{{ user_reviews.next_page_number }}">Load More</button>
+            {% endif %}
+            </div>
+        </div>
+
+        <div class="my-comments">
+            <div class="comment-group">
+                <h2>My Comments</h2>
+                {% if user_comments %}
+                    {% for comment in user_comments %}
+                        <a href="{% url 'post-detail' comment.CommentPost.slug %}">
+                            <div class="comment-detail">
+                                <div>{{ comment.CommentPost.restaurant_name }} on {{ comment.date_posted|date:"d/m/Y" }}</div>
+                                <div>{{ comment.content }}</div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div> You don't have any comments</div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extend_footer %}
+    <script src="{% static 'users/profile.js' %}"></script>
+{% endblock %}

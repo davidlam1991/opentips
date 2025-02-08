@@ -1,0 +1,27 @@
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block title %}Verify Email{% endblock %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'users/form-styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section>
+        <h2>Verify Email</h2>
+        <form action="" method='POST'>
+            {% csrf_token %}
+            <div>
+                <input name="otp_code" placeholder="Code paste here">
+            </div>
+
+            <div class="form-btn">
+                <button type="submit">Activate Account</button>
+            </div>
+            <div>
+                <p>Need a new OTP? <a href="{% url 'resend-otp' %}">Resend</a></p>
+            </div>
+        </form>
+    </section>
+{% endblock %}

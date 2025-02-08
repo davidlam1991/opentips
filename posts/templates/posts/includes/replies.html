@@ -1,0 +1,197 @@
+{% load humanize %}
+{% load static %}
+
+<div>
+    <div class="comment-section infinite-container">
+        <h2><b>Comments</b></h2>
+
+        <!-- User Input Main Form -->
+        {% if user.is_authenticated %}
+            <form action="" method="POST" id="main-form" class="comment-form">
+                {% csrf_token %}
+                <textarea name="content" class="comment-input" rows="1" placeholder="Add your thoughts!">
+                    {{ comment_form.content.value }}
+                </textarea>
+
+                <div class="comment-btn-group">
+                    <input type="button" value="Cancel" class="cancel-btn"/>
+                    <input type="submit" value="Submit" class="submit-btn"/>
+                </div>
+            </form>
+        {% else %}
+            <p>You need to <a href="{% url 'users-login' %}">log in</a> to leave a comment.</p>
+        {% endif %}
+
+        <div class="infinite-item">
+            {% for comment in comments %}
+                <hr />
+                <div class="comment comment-btn-container" id="comment-{{ comment.id }}">
+                    <div>
+                        <i class="fa-solid fa-user user-icon"></i>
+                        <b class="author-name">{{ comment.author }} </b>
+                        <span class="date-posted">{{ comment.date_posted|naturaltime }}</span>
+                    </div>
+
+                    <div></div>
+
+                    <!-- Edit Comment -->
+                    <div>
+                        <span class="comment-content" id="content-{{ comment.id }}">{{ comment.content|linebreaks }}</span>
+                        <textarea class="editable-textarea hidden" rows="1" autocomplete="off" id="textarea-{{ comment.id }}">
+                            {{ comment.content }}
+                        </textarea>
+
+                        <div class="edit-comment-btn-group hidden">
+                            <input type="button" value="Cancel" class="edit cancel-btn" data-id="{{ comment.id }}" data-type="comment"/>
+                            <input type="button" value="Save" class="edit save-btn" data-id="{{ comment.id }}" data-type="comment"/>
+                        </div>
+                    </div>
+
+                    <div class="comment-select-group">
+                        {% if user.is_authenticated %}
+                            {% if user == comment.author %}
+                                <button class="reply-button" data-id="{{ comment.id }}" data-author="{{ comment.author }}" data-nested="no">
+                                    <i class="fa-solid fa-reply"></i>
+                                </button>
+
+                                <button class="dot-icon comment-dot-icon"><i class="fa-solid fa-ellipsis"></i></button>
+
+                                <!-- Dot Icon Pop up  -->
+                                <div class="post-actions-modal hidden" id="comment-actions-{{ comment.id }}">
+                                    <a class="btn btn-light edit-btn" data-id="{{ comment.id }}" data-type="comment"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                    {% if user.is_staff %}
+                                        <a class="btn btn-light delete-comment-button" data-comment-id="{{ comment.id }}"><i class="fa-solid fa-trash"></i> Delete</a>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <button class="reply-button" data-id="{{ comment.id }}" data-author="{{ comment.author }}" data-nested="no">
+                                    <i class="fa-solid fa-reply"></i>
+                                </button>
+                                <button class="dot-icon"><i class="fa-solid fa-ellipsis"></i></button>
+
+                                <div class="post-actions-modal hidden" id="comment-actions-{{ comment.id }}">
+                                    {% if user == comment.author %}
+                                        <a class="btn btn-light edit-btn" data-id="{{ comment.id }}" data-type="comment"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                    {% endif %}
+                                    {% if user.is_staff %}
+                                        <a class="btn btn-light delete-comment-button" data-comment-id="{{ comment.id }}"><i class="fa-solid fa-trash"></i> Delete</a>
+                                    {% else %}
+                                        <a class="btn btn-light report-button" data-slug="{{ post.slug }}" data-content="{{ comment.content }}" data-author="{{ comment.author }}" >
+                                            <i class="fa-solid fa-flag"></i> Report
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Reply Comment Textarea -->
+                    <div class="reply-comment-area">
+                        <form action="" method="POST" id="reply-form-{{ comment.id }}" class="reply-form" hidden>
+                            <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                            {% csrf_token %}
+                            <textarea name="content" class="comment-input" rows="1" placeholder="Tell us more please!">
+                                {{ comment_form.content.value }}
+                            </textarea>
+                            <div class="comment-btn-group">
+                                <input type="button" value="Cancel" class="cancel-btn"/>
+                                <input type="submit" value="Submit" class="submit-btn"/>
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <!-- Nested Comments -->
+                    {% for reply in comment.replies.all %}
+                        <div class="comment nested-comment-btn-container" id="reply-{{ reply.id }}">
+                            <div id="comment-{{ reply.id }}">
+                                <i class="fa-solid fa-user user-icon"></i>
+                                <b class="author-name">{{ reply.author }}</b>
+                                <span class="date-posted">{{ reply.date_posted|naturaltime }}</span>
+                            </div>
+
+                            <div></div>
+
+                            <!-- Edit Nested Comment -->
+                            <div>
+                                <span class="comment-content" id="content-{{ reply.id }}" data-author="{{ reply.author }}">{{ reply.content|linebreaks }}</span>
+                                <textarea class="editable-textarea hidden" rows="1" autocomplete="off" id="textarea-{{ reply.id }}">{{ reply.content }}</textarea>
+
+                                <div class="edit-comment-btn-group hidden">
+                                    <input type="button" value="Cancel" class="edit cancel-btn" data-id="{{ reply.id }}" data-type="reply" />
+                                    <input type="button" value="Save" class="edit save-btn" data-id="{{ reply.id }}" data-type="reply" />
+                                </div>
+                            </div>
+
+                            <div class="comment-select-group">
+                                {% if user.is_authenticated %}
+                                    {% if user == reply.author %}
+                                        <button class="reply-button" data-id="{{ reply.id }}" data-author="{{ reply.author }}" data-nested="yes">
+                                            <i class="fa-solid fa-reply"></i>
+                                        </button>
+
+                                        <button class="dot-icon edit comment-dot-icon"><i class="fa-solid fa-ellipsis"></i></button>
+
+                                        <!-- Dot Icon Pop up  -->
+                                        <div class="post-actions-modal hidden" id="comment-actions-{{ reply.id }}">
+                                            <a class="btn btn-light edit-btn" data-id="{{ reply.id }}" data-type="reply"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                            {% if user.is_staff %}
+                                                <a class="btn btn-light delete-comment-button" data-comment-id="{{ reply.id }}"><i class="fa-solid fa-trash"></i> Delete</a>
+                                            {% endif %}
+                                        </div>
+                                    {% else %}
+                                        <button class="reply-button" data-id="{{ reply.id }}" data-author="{{ reply.author }}" data-nested="yes">
+                                            <i class="fa-solid fa-reply"></i>
+                                        </button>
+                                        <button class="dot-icon"><i class="fa-solid fa-ellipsis"></i></button>
+
+                                        <div class="post-actions-modal hidden" id="comment-actions-{{ reply.id }}">
+                                            {% if user == reply.author %}
+                                                <a class="btn btn-light edit-btn" data-id="{{ reply.id }}" data-type="reply"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                            {% endif %}
+                                            {% if user.is_staff %}
+                                                <a class="btn btn-light delete-comment-button" data-comment-id="{{ reply.id }}"><i class="fa-solid fa-trash"></i> Delete</a>
+                                            {% else %}
+                                                <a class="btn btn-light report-button" data-slug="{{ post.slug }}" data-content="{{ reply.content }}" data-author="{{ reply.author }}" >
+                                                    <i class="fa-solid fa-flag"></i> Report
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+
+                            <!-- Reply Nested Comment Textarea -->
+                            <div class="reply-comment-area">
+                                <form action="" method="POST" id="reply-form-{{ reply.id }}" class="reply-form" hidden>
+                                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                    {% csrf_token %}
+                                    <textarea name="content" class="comment-input" rows="1" placeholder="Tell us more please!">
+                                        {{ comment_form.content.value }}
+                                    </textarea>
+                                    <div class="comment-btn-group">
+                                        <input type="button" value="Cancel" class="cancel-btn"/>
+                                        <input type="submit" value="Submit" class="submit-btn"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="loop-icon">
+        {% if comments.has_next %}
+            <a class="infinite-more-link" href="?page-comments={{ comments.next_page_number }}">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="/static/js/infinite.min.js"></script>
